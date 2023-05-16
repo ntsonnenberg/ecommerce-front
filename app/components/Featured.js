@@ -1,6 +1,7 @@
 "use client";
 import { styled } from "styled-components";
 import Center from "./Center";
+import Button from "./Button";
 
 const Bg = styled.div`
 	background-color: #222;
@@ -47,6 +48,12 @@ export default function Featured() {
 								of type and scrambled it to make a type specimen book. It has
 								survived not only five centuries, but also the leap into
 							</Desc>
+							<Button white size="l">
+								Read More
+							</Button>
+							<Button primary size="l">
+								Add to Cart
+							</Button>
 						</div>
 					</Column>
 					<Column>

@@ -1,9 +1,7 @@
 "use client";
-
-import { Inter } from "next/font/google";
 import { createGlobalStyle } from "styled-components";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
 	title: "Create Next App",
@@ -23,7 +21,7 @@ export default function RootLayout({ children }) {
 		<>
 			<GlobalStyles />
 			<html lang="en">
-				<body className={inter.className}>{children}</body>
+				<body>{children}</body>
 			</html>
 		</>
 	);
