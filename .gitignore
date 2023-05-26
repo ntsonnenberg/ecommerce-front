@@ -36,6 +36,3 @@ next-env.d.ts
 
 # yarn
 yarn.lock
-
-# babel
-.babelrc

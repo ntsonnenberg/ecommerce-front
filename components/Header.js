@@ -1,7 +1,5 @@
-"use client";
 import Link from "next/link";
-import { styled } from "styled-components";
-import { createContext } from "react";
+import styled from "styled-components";
 import Center from "./Center";
 
 const StyledHeader = styled.header`

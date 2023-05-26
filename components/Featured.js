@@ -1,5 +1,4 @@
-"use client";
-import { styled } from "styled-components";
+import styled from "styled-components";
 import Center from "./Center";
 import Button from "./Button";
 
@@ -19,12 +18,13 @@ const Desc = styled.p`
 	font-size: 0.8rem;
 `;
 
-const Wrapper = styled.div`
+const ColumnsWrapper = styled.div`
 	display: grid;
-	grid-template-columns: 0.8fr 1.2fr;
+	grid-template-columns: 0.9fr 1.1fr;
 	gap: 40px;
 	img {
 		max-width: 100%;
+		max-height: 250px;
 	}
 `;
 
@@ -33,11 +33,16 @@ const Column = styled.div`
 	align-items: center;
 `;
 
+const ButtonsWrapper = styled.div`
+	display: flex;
+	gap: 5px;
+`;
+
 export default function Featured() {
 	return (
 		<Bg>
 			<Center>
-				<Wrapper>
+				<ColumnsWrapper>
 					<Column>
 						<div>
 							<Title>Pro anywhere</Title>
@@ -46,20 +51,24 @@ export default function Featured() {
 								industry. Lorem Ipsum has been the industry's standard dummy
 								text ever since the 1500s, when an unknown printer took a galley
 								of type and scrambled it to make a type specimen book. It has
-								survived not only five centuries, but also the leap into
 							</Desc>
-							<Button white size="l">
-								Read More
-							</Button>
-							<Button primary size="l">
-								Add to Cart
-							</Button>
+							<ButtonsWrapper>
+								<Button outline white size={"l"}>
+									Read More
+								</Button>
+								<Button primary size={"l"}>
+									Add to Cart
+								</Button>
+							</ButtonsWrapper>
 						</div>
 					</Column>
 					<Column>
-						<img src="https://support.apple.com/content/dam/edam/applecare/images/en_US/psp_heros/hero-banner-macbook-pro.image.large_2x.jpg" />
+						<img
+							src="https://nate-next-ecommerce.s3.amazonaws.com/1683475620408.jpg"
+							alt="Macbook Pro"
+						/>
 					</Column>
-				</Wrapper>
+				</ColumnsWrapper>
 			</Center>
 		</Bg>
 	);
