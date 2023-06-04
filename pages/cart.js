@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import { CartContext } from "@/components/CartContext";
 import Center from "@/components/Center";
 import Header from "@/components/Header";
+import Input from "@/components/Input";
 import Table from "@/components/Table";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
@@ -39,17 +40,65 @@ const ProductImageBox = styled.div`
 	}
 `;
 
+const QuantityLabel = styled.span`
+	padding: 0 3px;
+`;
+
+const CityHolder = styled.div`
+	display: flex;
+	gap: 5px;
+`;
+
 export default function CartPage() {
-	const { cartProducts } = useContext(CartContext);
+	const { cartProducts, addProduct, removeProduct } = useContext(CartContext);
 	const [products, setProducts] = useState([]);
+	const [name, setName] = useState("");
+	const [email, setEmail] = useState("");
+	const [city, setCity] = useState("");
+	const [postalCode, setPostalCode] = useState("");
+	const [streetAddress, setStreetAddress] = useState("");
+	const [country, setCountry] = useState("");
 
 	useEffect(() => {
 		if (cartProducts.length > 0) {
 			axios.post("/api/cart", { ids: cartProducts }).then((response) => {
 				setProducts(response.data);
 			});
+		} else {
+			setProducts([]);
 		}
 	}, [cartProducts]);
+
+	const moreOfThisProduct = (id) => {
+		addProduct(id);
+	};
+
+	const lessOfThisProduct = (id) => {
+		removeProduct(id);
+	};
+
+	const goToPayment = async () => {
+		const response = await axios.post("/api/checkout", {
+			name,
+			email,
+			city,
+			postalCode,
+			streetAddress,
+			country,
+			cartProducts,
+		});
+
+		if (response.data.url) {
+			window.location = response.data.url;
+		}
+	};
+
+	let total = 0;
+
+	for (const productId of cartProducts) {
+		const price = products.find((p) => p._id === productId)?.price || 0;
+		total += price;
+	}
 
 	return (
 		<>
@@ -78,11 +127,31 @@ export default function CartPage() {
 												{product.title}
 											</ProductInfoCell>
 											<td>
-												{cartProducts.filter((id) => id === product._id).length}
+												<Button onClick={() => lessOfThisProduct(product._id)}>
+													-
+												</Button>
+												<QuantityLabel>
+													{
+														cartProducts.filter((id) => id === product._id)
+															.length
+													}
+												</QuantityLabel>
+												<Button onClick={() => moreOfThisProduct(product._id)}>
+													+
+												</Button>
 											</td>
-											<td>price</td>
+											<td>
+												$
+												{cartProducts.filter((id) => id === product._id)
+													.length * product.price}
+											</td>
 										</tr>
 									))}
+									<tr>
+										<td></td>
+										<td></td>
+										<td>${total}</td>
+									</tr>
 								</tbody>
 							</Table>
 						)}
@@ -90,9 +159,51 @@ export default function CartPage() {
 					{!!cartProducts?.length && (
 						<Box>
 							<h2>Order Information</h2>
-							<input type="text" placeholder="Address" />
-							<input type="text" placeholder="Address 2" />
-							<Button black block>
+							<Input
+								type="text"
+								placeholder="Name"
+								value={name}
+								name="name"
+								onChange={(event) => setName(event.target.value)}
+							/>
+							<Input
+								type="text"
+								placeholder="Email"
+								value={email}
+								name="email"
+								onChange={(event) => setEmail(event.target.value)}
+							/>
+							<CityHolder>
+								<Input
+									type="text"
+									placeholder="City"
+									value={city}
+									name="city"
+									onChange={(event) => setCity(event.target.value)}
+								/>
+								<Input
+									type="text"
+									placeholder="Postal Code"
+									value={postalCode}
+									name="postalCode"
+									onChange={(event) => setPostalCode(event.target.value)}
+								/>
+							</CityHolder>
+							<Input
+								type="text"
+								placeholder="Street Address"
+								value={streetAddress}
+								name="streetAddress"
+								onChange={(event) => setStreetAddress(event.target.value)}
+							/>
+							<Input
+								type="text"
+								placeholder="Country"
+								value={country}
+								name="country"
+								onChange={(event) => setCountry(event.target.value)}
+							/>
+							<Button black block onClick={goToPayment}>
 								Continue to payment
 							</Button>
 						</Box>
